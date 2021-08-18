@@ -1,90 +1,141 @@
 FORMAT: 1A
-HOST: https://polls.apiblueprint.org/
+HOST: https://neighbourhoodCollaboration.com/
 
 # neighbourhoodCollaboration
 
-Update and read the NeighbourhoodCollaboration database using the NC api. 
-There are three collections in the database with their own respective endpoints. 
+## Households Collection [/households]
 
-For example, to GET a high level overview, use the /households endpoint.
-This will return an array of all of the households: objects containing
-their address and an array containing the names of the residents.
-
-All post, put and update requests are handled by the /people endpoint.
-For example, if we PUT a change to an existing person's address, our 
-api will update the households. If this address did not previously exist
-in the postcode collection, it will be added.
-
-## Questions Collection [/questions]
-
-### List All Questions [GET]
+### List all househoolds [GET]
 
 + Response 200 (application/json)
 
         [
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
+                "address": "123 Jon Street",
+                "residients": ["name1", "name2", "name3"]
             }
+        
         ]
+        
+    
+## Households Collection [/households/:id]
 
-### Create a New Question [POST]
+### Get househoold by adress [GET]
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
++ Response 200 (application/json)
+
+            {
+                "address": "123 Jon Street",
+                "residients": ["name1", "name2", "name3"]
+            }
+    
+
+### Update household info [PUT]
+
++ Request 200 (application/json)
+
+        [
+            {
+                "id": "id",
+                "name": "Name1"
+            }
+        
+        ]
+        
++ Response 200 (application/json)
+
+### Delete household [DELETE]
+
++ Request 200 (application/json)
+
+        [
+            {
+                "address": "id"
+            }
+        
+        ]
+        
++ Response 200 (application/json)
+
+## Postcodes Collection [/postcodes]
+
+### List all postcodes [GET]
+
++ Response 200 (application/json)
+
+        {
+            "AD67 D12": ["213 Jon Street", "241 Jon Street"],
+            "AD57 C12": ["563 Jon Street", "564 Jon Street"]
+        }
+        
+## Postcodes Collection [/neighbourhood]
+
+### Create a new database entry [POST]
+
 
 + Request (application/json)
 
         {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
+                "name": "Name1",
+                "age": 23,
+                "peopleHousehold": 4
+                "address": "123 Jon Street, DA4 YB5",
         }
 
 + Response 201 (application/json)
 
-    + Headers
-
-            Location: /questions/2
-
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
-                    }
-                ]
+                "message": "Data was successfully added to database"
             }
+            
+    
+## People Collection [/people]
+
+### List all people [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "name": "Name1",
+                "age": 23,
+                "peopleHousehold": 4
+                "address": "123 Jon Street, DA4 YB5",
+            }
+        ]
+        
+
+### Update person's data [PUT]
+
++ Request 200 (application/json)
+
+        {   
+                "id": "id",
+                "address": "123 Jon Street, DA4 YB5",
+        }
+        
+    
++ Response 200 (application/json)
+
+        {
+            "message": "Data was successfully updated"
+        }
+        
+        
+### Delete person from database [DELETE]
+
++ Request 200 (application/json)
+
+        
+        {   
+                "id": "id"
+        }
+        
+        
++ Response 200 (application/json)
+
+        {
+            "message": "Data was sdeleted"
+        }
