@@ -1,141 +1,138 @@
 FORMAT: 1A
-HOST: https://neighbourhoodCollaboration.com/
+HOST: https://polls.apiblueprint.org/
 
-# neighbourhoodCollaboration
+# NeighbourhoodCollaboration
 
-## Households Collection [/households]
+Update and read the NeighbourhoodCollaboration database using the NBC api. 
+There are three collections in the database with their own respective endpoints. 
 
-### List all househoolds [GET]
 
-+ Response 200 (application/json)
+For example, to GET a high level overview, use the /households endpoint.
+This will return an array of all of the households: objects containing
+their address and an array containing the names of the residents.
 
-        [
-            {
-                "address": "123 Jon Street",
-                "residients": ["name1", "name2", "name3"]
-            }
-        
-        ]
-        
-    
+All post, put and update requests are handled by the /people endpoint.
+For example, if we PUT a change to an existing person's address, our 
+api will update the households. If this address did not previously exist
+in the postcode collection, it will be added.
+
 ## Households Collection [/households/:id]
 
-### Get househoold by adress [GET]
+### List All Households [GET]
 
 + Response 200 (application/json)
-
-            {
-                "address": "123 Jon Street",
-                "residients": ["name1", "name2", "name3"]
-            }
-    
-
-### Update household info [PUT]
-
-+ Request 200 (application/json)
 
         [
             {
-                "id": "id",
-                "name": "Name1"
+                "address": "34 Jump Street",
+                "residents": ["Bill Nox", "Jessica Shard"]
             }
-        
         ]
-        
-+ Response 200 (application/json)
 
-### Delete household [DELETE]
-
-+ Request 200 (application/json)
-
-        [
-            {
-                "address": "id"
-            }
-        
-        ]
-        
-+ Response 200 (application/json)
-
-## Postcodes Collection [/postcodes]
-
-### List all postcodes [GET]
+### List Residents Of Household [GET]
 
 + Response 200 (application/json)
 
         {
-            "AD67 D12": ["213 Jon Street", "241 Jon Street"],
-            "AD57 C12": ["563 Jon Street", "564 Jon Street"]
+            "address": "34 Jump Street",
+            "residents": ["Bill Nox", "Jessica Shard"]
         }
+
+## People Collection [/people/:id]
+### List All People [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "name": "Jessica Shard",
+                "age": 29,
+                "people_in_household": 4,
+                "address": "34 Jump Street, XYZ 95A"
+            },
+            {
+                "name": "Bill Nox",
+                "age": 31,
+                "people_in_household": 4,
+                "address": "34 Jump Street, XYZ 95A"
+            }
+        ]
         
-## Postcodes Collection [/neighbourhood]
+### Get Person By ID
 
-### Create a new database entry [POST]
++ Response 200 (application/json)
 
+            {
+                "name": "Bill Nox",
+                "age": 31,
+                "people_in_household": 4,
+                "address": "34 Jump Street, XYZ 95A"
+            }
+
+### Add New Person [POST]
 
 + Request (application/json)
 
         {
-                "name": "Name1",
-                "age": 23,
-                "peopleHousehold": 4
-                "address": "123 Jon Street, DA4 YB5",
+            "name": "David Brooker",
+            "age": 28,
+            "people_in_household": 4,
+            "address": "34 Jump Street, XYZ 95A",
         }
 
 + Response 201 (application/json)
 
-    + Body
+        {
+            "message" : 
+                "added David Brooker (28, living with 4 others at 34 Jump Street, XYZ 95A"
+        }
 
-            {
-                "message": "Data was successfully added to database"
-            }
-            
-    
-## People Collection [/people]
+### Change Existing Person [PUT]
 
-### List all people [GET]
++ Request (application/json)
+
+        {
+            "id": 2,
+            "name": "David Lake-Brooker",
+            "address": "64 Zoo Lane, XYZ 95A"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "message" : 
+                "changed David Brooker name to David Lake-Brooker and address to 64 Zoo Lane, XYZ 95A"
+        }
+
+### Delete Existing Person [DELETE]
+
++ Request (application/json)
+
+        {
+            "id": 2
+        }
+
++ Response 201 (application/json)
+
+        {
+            "message" : 
+                "removed David Brooker from neighbourhood database"
+        }
+
+## Postcodes Collection [/postcodes/:postcode]
+### List All Postcodes [GET]
 
 + Response 200 (application/json)
 
         [
-            {
-                "name": "Name1",
-                "age": 23,
-                "peopleHousehold": 4
-                "address": "123 Jon Street, DA4 YB5",
-            }
+            "XYZ 95A": ["34 Jump Street"],
+            "XYZ 95B": ["64 Zoo Lane", "65 Zoo Lane"]
         ]
         
+### List Addresses In Postcode [GET]
 
-### Update person's data [PUT]
-
-+ Request 200 (application/json)
-
-        {   
-                "id": "id",
-                "address": "123 Jon Street, DA4 YB5",
-        }
-        
-    
 + Response 200 (application/json)
 
         {
-            "message": "Data was successfully updated"
-        }
-        
-        
-### Delete person from database [DELETE]
-
-+ Request 200 (application/json)
-
-        
-        {   
-                "id": "id"
-        }
-        
-        
-+ Response 200 (application/json)
-
-        {
-            "message": "Data was sdeleted"
+            "XYZ 95A": ["34 Jump Street"]
         }
