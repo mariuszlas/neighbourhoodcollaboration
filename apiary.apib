@@ -3,7 +3,17 @@ HOST: https://polls.apiblueprint.org/
 
 # neighbourhoodCollaboration
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Update and read the NeighbourhoodCollaboration database using the NC api. 
+There are three collections in the database with their own respective endpoints. 
+
+For example, to GET a high level overview, use the /households endpoint.
+This will return an array of all of the households: objects containing
+their address and an array containing the names of the residents.
+
+All post, put and update requests are handled by the /people endpoint.
+For example, if we PUT a change to an existing person's address, our 
+api will update the households. If this address did not previously exist
+in the postcode collection, it will be added.
 
 ## Questions Collection [/questions]
 
